@@ -1,0 +1,55 @@
+Local público:
+Latitude - numeric not null
+Longitude - numeric not null
+Nome - varchar not null
+
+Item:
+Id - serial not null
+Descrição - varchar
+Localização - varchar not null
+Latitude - numeric not null
+Longitude - numeric not null
+
+Anomalia:
+ID - serial not null
+Zona - numeric[2] not null
+Imagem - bytea not null
+Ts - timestamp not null
+Lingua - varchar not null
+Descrição - varchar
+tem_anomalia_redação - boolean
+
+Anomalia_Tradução:
+ID - serial not null
+Zona2 - numeric[2] not null
+Lingua2 - varchar not null
+
+Duplicado:
+Item1 - integer not null
+Item2 - integer not null
+
+Utilizador:
+Email - varchar not null
+Password - varchar not null
+
+Utilizador Regular:
+Email - varchar not null
+
+Utilizador Qualificado:
+Email - varchar not null
+
+Incidência:
+anomalia_ID - integer not null
+Item_id - integer not null
+Email - varchar not null
+
+Proposta de Correção:
+Email - varchar not null
+Nro - integer not null
+Data_hora - timestamp
+Texto - text
+
+Correção:
+Email - varchar not null
+Nro - integer not null
+Anomalia_id - integer not null
