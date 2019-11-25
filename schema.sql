@@ -54,7 +54,7 @@ create table duplicado(
     constraint pk_duplicado primary key (item1, item2),
     constraint fk_item1_duplicado foreign key (item1) references item (id),
     constraint fk_item2_duplicado foreign key (item2) references item (id),
-    constraint duplicado_check check (item1 <> item2)
+    constraint duplicado_check check (item1 < item2)
 );
 
 create table utilizador(
