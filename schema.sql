@@ -64,13 +64,13 @@ create table utilizador(
 );
 
 create table utilizador_qualificado(
-    email varchar (30) not null unique,
+    email varchar (30) unique,
     constraint pk_utilizadorqualificado primary key (email),
     constraint fk_email_utilizadorqualificado foreign key (email) references utilizador (email)
 );
 
 create table utilizador_regular(
-    email varchar (30) not null unique,
+    email varchar (30) unique,
     constraint pk_utilizadorregular primary key (email),
     constraint fk_email_utilizadorregular foreign key (email) references utilizador (email)
 );
