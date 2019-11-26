@@ -77,6 +77,7 @@
 
         /*Inserir e remover locais, itens e anomalias*/
         
+        pg_query("start transaction");
         $mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : '';
         $type = isset($_REQUEST['type']) ? $_REQUEST['type'] : '';
         
@@ -138,6 +139,8 @@
                 $stml->execute();
             }
         }
+        if($stml){ pg_query("commit");}
+        else { pg_query("rollback");}
     }
 
     catch (PDOException $e) {
