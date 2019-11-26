@@ -64,13 +64,13 @@ create table utilizador(
 );
 
 create table utilizador_qualificado(
-    email varchar (30) unique,
+    email varchar (30) not null unique,
     constraint pk_utilizadorqualificado primary key (email),
     constraint fk_email_utilizadorqualificado foreign key (email) references utilizador (email)
 );
 
 create table utilizador_regular(
-    email varchar (30) unique,
+    email varchar (30) not null unique,
     constraint pk_utilizadorregular primary key (email),
     constraint fk_email_utilizadorregular foreign key (email) references utilizador (email)
 );
@@ -78,7 +78,7 @@ create table utilizador_regular(
 create table incidencia(
     anomalia_id integer not null,
     item_id integer not null,
-    email varchar (30) not null unique,
+    email varchar (30) not null,
     constraint pk_incidencia primary key (anomalia_id),
     constraint fk_anomalia_id_incidencia foreign key (anomalia_id) references anomalia (id),
     constraint fk_itemid_incidencia foreign key (item_id) references item (id),
@@ -86,8 +86,8 @@ create table incidencia(
 );
 
 create table proposta_de_correcao(
-    email varchar (30) not null unique,
-    nro serial not null,
+    email varchar (30) not null,
+    nro integer not null,
     data_hora timestamp not null,
     texto text not null,
     constraint pk_proposta_de_correcao primary key (email,nro),
@@ -95,11 +95,10 @@ create table proposta_de_correcao(
 );
 
 create table correcao(
-    email varchar (30) not null unique,
-    nro integer not null unique,
+    email varchar (30) not null,
+    nro integer not null,
     anomalia_id integer not null,
     constraint pk_correcao primary key (email,nro,anomalia_id),
-    constraint fk_email_correcao foreign key (email) references proposta_de_correcao (email),
-    constraint fk_nro_correcao foreign key (nro) references proposta_de_correcao (nro),
+    constraint fk_email_nro_correcao foreign key (email,nro) references proposta_de_correcao (email,nro),
     constraint fk_anomaliaid_correcao foreign key (anomalia_id) references incidencia (anomalia_id)
 );
