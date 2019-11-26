@@ -36,13 +36,13 @@ create table anomalia(
     ts timestamp not null,
     descricao varchar (255),
     tem_anomalia_redacao boolean not null,
-    zona numeric[2] not null,
+    zona box not null,
     constraint pk_anomalia primary key (id)
 );
 
 create table anomalia_traducao(
-    id serial not null,
-    zona2 numeric[2] not null,
+    id integer not null unique,
+    zona2 box not null,
     lingua2 varchar(20) not null,
     constraint pk_anomaliatraducao primary key (id),
     constraint fk_id_anomaliatraducao foreign key (id) references anomalia(id)
@@ -87,7 +87,7 @@ create table incidencia(
 
 create table proposta_de_correcao(
     email varchar (30) not null unique,
-    nro integer not null unique,
+    nro serial not null,
     data_hora timestamp not null,
     texto text not null,
     constraint pk_proposta_de_correcao primary key (email,nro),
