@@ -77,6 +77,7 @@
 
         /*Inserir e remover locais, itens e anomalias*/
         
+        $db->query("start transaction");
         $mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : '';
         $type = isset($_REQUEST['type']) ? $_REQUEST['type'] : '';
         
@@ -138,10 +139,12 @@
                 $stml->execute();
             }
         }
+    $db->query("commit");
     }
 
     catch (PDOException $e) {
-        echo("<p>ERROR: {$e->getMessage()}</p><br><a href=\"a.php\">Back</a>");
+        $db->query("rollback");
+        echo("<p>ERROR: {$e->getMessage()}</p>");
     }
 ?>
         
