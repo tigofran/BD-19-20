@@ -25,8 +25,8 @@ create table item(
 	latitude numeric (8,6) not null,
 	longitude numeric (9,6) not null,
 	constraint pk_item primary key (id),
-    constraint fk_latitude_item foreign key (latitude) references local_publico (latitude),
-    constraint fk_longitude_item foreign key (longitude) references local_publico (longitude)
+    constraint fk_latitude_item foreign key (latitude) references local_publico (latitude) on delete cascade,
+    constraint fk_longitude_item foreign key (longitude) references local_publico (longitude) on delete cascade
 );
 
 create table anomalia(
@@ -52,8 +52,8 @@ create table duplicado(
     item1 integer not null,
     item2 integer not null,
     constraint pk_duplicado primary key (item1, item2),
-    constraint fk_item1_duplicado foreign key (item1) references item (id),
-    constraint fk_item2_duplicado foreign key (item2) references item (id),
+    constraint fk_item1_duplicado foreign key (item1) references item (id) on delete cascade,
+    constraint fk_item2_duplicado foreign key (item2) references item (id) on delete cascade,
     constraint duplicado_check check (item1 < item2)
 );
 
@@ -66,13 +66,13 @@ create table utilizador(
 create table utilizador_qualificado(
     email varchar (30) not null unique,
     constraint pk_utilizadorqualificado primary key (email),
-    constraint fk_email_utilizadorqualificado foreign key (email) references utilizador (email)
+    constraint fk_email_utilizadorqualificado foreign key (email) references utilizador (email) on delete cascade
 );
 
 create table utilizador_regular(
     email varchar (30) not null unique,
     constraint pk_utilizadorregular primary key (email),
-    constraint fk_email_utilizadorregular foreign key (email) references utilizador (email)
+    constraint fk_email_utilizadorregular foreign key (email) references utilizador (email) on delete cascade
 );
 
 create table incidencia(
@@ -80,9 +80,9 @@ create table incidencia(
     item_id integer not null,
     email varchar (30) not null,
     constraint pk_incidencia primary key (anomalia_id),
-    constraint fk_anomalia_id_incidencia foreign key (anomalia_id) references anomalia (id),
-    constraint fk_itemid_incidencia foreign key (item_id) references item (id),
-    constraint fk_email_incidencia foreign key (email) references utilizador (email)
+    constraint fk_anomalia_id_incidencia foreign key (anomalia_id) references anomalia (id) on delete cascade,
+    constraint fk_itemid_incidencia foreign key (item_id) references item (id) on delete cascade,
+    constraint fk_email_incidencia foreign key (email) references utilizador (email) on delete cascade
 );
 
 create table proposta_de_correcao(
@@ -91,7 +91,7 @@ create table proposta_de_correcao(
     data_hora timestamp not null,
     texto text not null,
     constraint pk_proposta_de_correcao primary key (email,nro),
-    constraint fk_email_proposta_de_correcao foreign key (email) references utilizador_qualificado (email)
+    constraint fk_email_proposta_de_correcao foreign key (email) references utilizador_qualificado (email) on delete cascade
 );
 
 create table correcao(
@@ -99,6 +99,6 @@ create table correcao(
     nro integer not null,
     anomalia_id integer not null,
     constraint pk_correcao primary key (email,nro,anomalia_id),
-    constraint fk_email_nro_correcao foreign key (email,nro) references proposta_de_correcao (email,nro),
-    constraint fk_anomaliaid_correcao foreign key (anomalia_id) references incidencia (anomalia_id)
+    constraint fk_email_nro_correcao foreign key (email,nro) references proposta_de_correcao (email,nro) on delete cascade,
+    constraint fk_anomaliaid_correcao foreign key (anomalia_id) references incidencia (anomalia_id) on delete cascade
 );
