@@ -2,6 +2,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     </head>
+    <body>
 
 <?php
     try {
@@ -13,34 +14,28 @@
         $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        /*Inserir e remover locais, itens e anomalias*/
+        /*Registar incidências e duplicados*/
         
         $db->query("start transaction");
         $type = isset($_REQUEST['type']) ? $_REQUEST['type'] : '';
         
         if ($type == "incidencia") {
-            $sql = "INSERT INTO local_publico VALUES(:latitude, :longitude, :nome);";
+            $sql = "INSERT INTO incidencia (anomalia_id, item_id, email) VALUES(:anomalia_id, :item_id, :email);";
             $stmt = $db->prepare($sql);
-            $stmt->bindParam(':latitude', $_REQUEST['latitude']);
-            $stmt->bindParam(':longitude', $_REQUEST['longitude']);
+            $stmt->bindParam(':anomalia_id', $_REQUEST['anomalia_id']);
+            $stmt->bindParam(':item_id', $_REQUEST['item_id']);
+            $stmt->bindParam(':email', $_REQUEST['email']);
             $stmt->execute();
         }
-               }
-        if ($type == "item") {
-            $sql = "INSERT INTO local_publico (latitude, longitude) VALUES(:latitude, :longitude);";
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam(':latitude', $_REQUEST['latitude']);
-            $stmt->bindParam(':longitude', $_REQUEST['longitude']);
-            $stmt->execute();
 
-            $sql = "INSERT INTO item (id, descricao, localizacao)VALUES(:id, :descricao, :localizacao);";
+        if ($type == "duplicados") {
+            $sql = "INSERT INTO duplicados (item1, item2) VALUES(:item1, :item2);";
             $stmt = $db->prepare($sql);
-            $stml->bindParam(':id', $_REQUEST['id']);
-            $stml->bindParam(':descricao', $_REQUEST['descricao']);
-            $stml->bindParam(':localizacao', $_REQUEST['localizacao']);
-            $stml->execute();
+            $stmt->bindParam(':item1', $_REQUEST['item1']);
+            $stmt->bindParam(':item2', $_REQUEST['item2']);
+            $stmt->execute();
         }
-    $db->query("commit");
+        $db->query("commit");
     }
     
     catch (PDOException $e) {
@@ -66,7 +61,7 @@
             <p>ID do item 2: <input type='number' id = 'item2' name='item2' min = '0'/></p>
             <p><input type='submit' value='Submit'/></p>
         </form>
-        <script>
+        <!-- <script>
             function setMin() {
                 var item1 = document.getElementById("item1");
                 var item2 = document.getElementById("item2");
@@ -74,6 +69,6 @@
             }
             var trigger = document.getElementById("item1");
             trigger.addEventListener("change", setMin, false);
-        </script>   
+        </script> -->  
     </body>
 </html>

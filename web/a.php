@@ -42,7 +42,7 @@
         }
         if ($mode == "add") {
             if ($type == "local") {
-                $sql = "INSERT INTO local_publico VALUES(:latitude, :longitude, :nome);";
+                $sql = "INSERT INTO local_publico (latitude, longitude, nome) VALUES(:latitude, :longitude, :nome);";
                 $stmt = $db->prepare($sql);
                 $stmt->bindParam(':latitude', $_REQUEST['latitude']);
                 $stmt->bindParam(':longitude', $_REQUEST['longitude']);
@@ -56,21 +56,22 @@
                 $stmt->bindParam(':longitude', $_REQUEST['longitude']);
                 $stmt->execute();
 
-                $sql = "INSERT INTO item (id, descricao, localizacao)VALUES(:id, :descricao, :localizacao);";
+                $sql = "INSERT INTO item (descricao, localizacao) VALUES(:descricao, :localizacao);";
                 $stmt = $db->prepare($sql);
-                $stml->bindParam(':id', $_REQUEST['id']);
                 $stml->bindParam(':descricao', $_REQUEST['descricao']);
                 $stml->bindParam(':localizacao', $_REQUEST['localizacao']);
                 $stml->execute();
             }
             if ($type == "anomalia") {
-                $sql = "INSERT INTO anomalia VALUES(:id, :zona, :imagem, :lingua, :ts, :descricao, :tem_anomalia_redacao);";
+                $sql = "INSERT INTO anomalia (zona, imagem, lingua, ts, descricao, tem_anomalia_redacao) VALUES(:zona, :imagem, :lingua, :ts, :descricao, :tem_anomalia_redacao);";
                 $stml = $db->prepare($sql);
-                $stml->bindParam(':id', $_REQUEST['id']);
-                $stml->bindParam(':zona', $_REQUEST['zona']);
+                $var = '((' . $_REQUEST['x1'] . ',' . $_REQUEST['y1'] .'), (' . $_REQUEST['x2'] .',' . $_REQUEST['y2'] . '))';
+                $stml->bindParam(':zona', $var);
                 $stml->bindParam(':imagem', $_REQUEST['imagem']);
                 $stml->bindParam(':lingua', $_REQUEST['lingua']);
-                $stml->bindParam(':ts', $_REQUEST['ts']);
+                $var2 = str_replace('T', ' ', $_REQUEST['ts']);
+                $var2 = $var2 . ':00';
+                $stml->bindParam(':ts', $var2);
                 $stml->bindParam(':descricao', $_REQUEST['descricao']);
                 $stml->bindParam(':tem_anomalia_redacao', $_REQUEST['tem_anomalia_redacao']);
                 $stml->execute();
@@ -107,9 +108,8 @@
         <form action='a.php' method='post'>
             <p><input type='hidden' name='mode' value='add'/></p>
             <p><input type='hidden' name='type' value='item'/></p>
-            <p>id: <input type='number' name='id'/></p>
             <p>descrição: <input type='text' name='descricao'/></p>
-            <p>localização: <input type='number' name='localizacao'/></p>
+            <p>localização: <input type='text' name='localizacao'/></p>
             <p>latitude: <input type='number' name='latitude' min = '-90' max = '90' step='0.000001'/></p>
             <p>longitude: <input type='number' name='longitude' min = '-180' max = '180' step='0.000001'/></p>
             <p><input type='submit' value='Submit'/></p>
@@ -127,13 +127,17 @@
         <form action='a.php' method='post'>
             <p><input type='hidden' name='mode' value='add'/></p>
             <p><input type='hidden' name='type' value='anomalia'/></p>
-            <p>id: <input type='number' name='id'/></p>
-            <p>zona: <input type='number' name='zona' max = '99'/></p>
+            <p>zona:</p>
+            <p>x1: <input type='number' name='x1'/></p>
+            <p>x2: <input type='number' name='x2'/></p>
+            <p>y1: <input type='number' name='y1'/></p>
+            <p>y2: <input type='number' name='y2'/></p>
             <p>imagem: <input type='text' name='imagem'/></p>
-            <p>ts: <input type='datetime-local' name='ts' max='2020-09-16 00:00:00'/></p>
+            <p>ts: <input type='datetime-local' name='ts' max="2020-09-16T00:30"/></p>
+            <p>lingua: <input type='text' name='lingua'/></p>
             <p>descrição: <input type='text' name='descricao'/></p>
-            <input type="checkbox" name="tem_anomalia_redacao" value="true"> tem anomalia de redação<br>
-            <input type="checkbox" name="tem_anomalia_redacao" value="false" checked> não tem anomalia de redação<br>
+            <input type="radio" name="tem_anomalia_redacao" value="true"> tem anomalia de redação<br>
+            <input type="radio" name="tem_anomalia_redacao" value="false" checked> não tem anomalia de redação<br>
             <p><input type='submit' value='Submit'/></p>
         </form>
 

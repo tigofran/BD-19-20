@@ -44,7 +44,7 @@
                 $stmt->bindParam(':nro', $_REQUEST['nro']);
                 $stmt->execute();
 
-                $sql = "INSERT INTO incidencia VALUES(:anomalia_id);";
+                $sql = "INSERT INTO incidencia (anomalia_id) VALUES(:anomalia_id);";
                 $stmt = $db->prepare($sql);
                 $stmt->bindParam(':anomalia_id', $_REQUEST['anomalia_id']);
                 $stmt->execute();
