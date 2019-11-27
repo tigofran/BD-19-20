@@ -18,6 +18,8 @@
         
         $db->query("start transaction");
         $type = isset($_REQUEST['type']) ? $_REQUEST['type'] : '';
+
+        $sqlid = "SELECT id FROM anomalia"
         
         if ($type == "incidencia") {
             $sql = "INSERT INTO incidencia (anomalia_id, item_id, email) VALUES(:anomalia_id, :item_id, :email);";
@@ -48,7 +50,12 @@
         <h3>Registar incidência</h3>
         <form action='d.php' method='post'>
             <p><input type='hidden' name='type' value='incidencia'/></p>
-            <p>ID da anomalia: <input type='number' name='anomalia_id' min = '0'/></p>
+            <p>ID da anomalia: </p>
+            <select name = "anomalia_id"> 
+                <option value = 'id'> A </option>
+                <option value = 'id2'> B </option>
+            </select>
+            <input type='number' name='anomalia_id' min = '0'/></p>
             <p>ID do item: <input type='number' name='item_id' min = '0'/></p>
             <p>email: <input type='text' name='email'/></p>
             <p><input type='submit' value='Submit'/></p>
@@ -61,7 +68,7 @@
             <p>ID do item 2: <input type='number' id = 'item2' name='item2' min = '0'/></p>
             <p><input type='submit' value='Submit'/></p>
         </form>
-        <!-- <script>
+        <script>
             function setMin() {
                 var item1 = document.getElementById("item1");
                 var item2 = document.getElementById("item2");
@@ -69,6 +76,6 @@
             }
             var trigger = document.getElementById("item1");
             trigger.addEventListener("change", setMin, false);
-        </script> -->  
+        </script>  
     </body>
 </html>
