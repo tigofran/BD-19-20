@@ -25,8 +25,7 @@ create table item(
 	latitude numeric (8,6) not null,
 	longitude numeric (9,6) not null,
 	constraint pk_item primary key (id),
-    constraint fk_latitude_item foreign key (latitude) references local_publico (latitude) on delete cascade,
-    constraint fk_longitude_item foreign key (longitude) references local_publico (longitude) on delete cascade
+    constraint fk_latitude_longitude_item foreign key (latitude,longitude) references local_publico (latitude,longitude) on delete cascade
 );
 
 create table anomalia(
