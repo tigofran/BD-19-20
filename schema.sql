@@ -12,9 +12,9 @@ drop table correcao cascade;
 
 
 create table local_publico(
-    latitude numeric(8,6) not null unique,
-    longitude numeric(9,6) not null unique,
-    nome varchar(128) not null,
+    latitude numeric(8,6) not null,
+    longitude numeric(9,6) not null,
+    nome varchar(128) not null unique,
     constraint pk_localpublico primary key (latitude, longitude)
 );
 
