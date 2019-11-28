@@ -17,65 +17,81 @@
        /*Inserir e remover locais, itens e anomalias*/
 
         $db->query("start transaction");
-        $mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : '';
-        $type = isset($_REQUEST['type']) ? $_REQUEST['type'] : '';
-        
-        if ($mode == "delete") {
-            if ($type == "local") {
-                $sql = "DELETE FROM local_publico WHERE nome = :nome;";
-                $stmt = $db->prepare($sql);
-                $stmt->bindParam(':nome', $_REQUEST['nome']);
-                $stmt->execute();
-            }
-            if ($type == "item") {
-                $sql = "DELETE FROM item WHERE id = :id";
-                $stmt = $db->prepare($sql);
-                $stmt->bindParam(':id', $_REQUEST['id']);
-                $stmt->execute();
-            }
-            if ($type == "anomalia") {
-                $sql = "DELETE FROM anomalia WHERE id = :id;";
-                $stmt = $db->prepare($sql);
-                $stmt->bindParam(':id', $_REQUEST['id']);
-                $stmt->execute();
-            }
-        }
-        if ($mode == "add") {
-            if ($type == "local") {
-                $sql = "INSERT INTO local_publico (latitude, longitude, nome) VALUES(:latitude, :longitude, :nome);";
-                $stmt = $db->prepare($sql);
-                $stmt->bindParam(':latitude', $_REQUEST['latitude']);
-                $stmt->bindParam(':longitude', $_REQUEST['longitude']);
-                $stmt->bindParam(':nome', $_REQUEST['nome']);
-                $stmt->execute();
-            }
-            if ($type == "item") {
-                $sql = "INSERT INTO local_publico (latitude, longitude) VALUES(:latitude, :longitude);";
-                $stmt = $db->prepare($sql);
-                $stmt->bindParam(':latitude', $_REQUEST['latitude']);
-                $stmt->bindParam(':longitude', $_REQUEST['longitude']);
-                $stmt->execute();
 
-                $sql = "INSERT INTO item (descricao, localizacao) VALUES(:descricao, :localizacao);";
-                $stmt = $db->prepare($sql);
-                $stml->bindParam(':descricao', $_REQUEST['descricao']);
-                $stml->bindParam(':localizacao', $_REQUEST['localizacao']);
-                $stml->execute();
-            }
-            if ($type == "anomalia") {
-                $sql = "INSERT INTO anomalia (zona, imagem, lingua, ts, descricao, tem_anomalia_redacao) VALUES(:zona, :imagem, :lingua, :ts, :descricao, :tem_anomalia_redacao);";
-                $stml = $db->prepare($sql);
-                $var = '((' . $_REQUEST['x1'] . ',' . $_REQUEST['y1'] .'), (' . $_REQUEST['x2'] .',' . $_REQUEST['y2'] . '))';
-                $stml->bindParam(':zona', $var);
-                $stml->bindParam(':imagem', $_REQUEST['imagem']);
-                $stml->bindParam(':lingua', $_REQUEST['lingua']);
-                $stml->bindParam(':ts', $_REQUEST['ts']);
-                $stml->bindParam(':descricao', $_REQUEST['descricao']);
-                $stml->bindParam(':tem_anomalia_redacao', $_REQUEST['tem_anomalia_redacao']);
-                $stml->execute();
-            }
+        $sql = "SELECT latitude, longitude FROM local_publico WHERE nome = :nome1;";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':nome1', $_REQUEST['local1']);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        foreach($result as $row){
+            $latitude1 = $row['latitude'];
+            $longitude1 = $row['longitude'];
         }
-    $db->query("commit");
+
+        $sql = "SELECT latitude, longitude FROM local_publico WHERE nome = :nome2;";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':nome2', $_REQUEST['local2']);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        foreach($result as $row){
+            $latitude2 = $row['latitude'];
+            $longitude2 = $row['longitude'];
+        }
+
+        if ($latitude1 < $latitude2){
+            $latitudemenor = $latitude1;
+            $latitudemaior = $latitude2;
+        }
+        else {
+            $latitudemenor = $latitude2;
+            $latitudemaior = $latitude1;
+        }
+
+        if ($longitude1 < $longitude2){
+            $longitudemenor = $longitude1;
+            $longitudemaior = $longitude2;
+        }
+        else {
+            $longitudemenor = $longitude2;
+            $longitudemaior = $longitude1;
+        }
+
+        $sql = "SELECT anomalia.id, zona, imagem, lingua, ts, anomalia.descricao, tem_anomalia_redacao FROM anomalia INNER JOIN incidencia on anomalia.id = incidencia.anomalia_id INNER JOIN item on incidencia.item_id = item.id WHERE (latitude between :latitudemenor and :latitudemaior) and (longitude between :longitudemenor and :longitudemaior);";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':latitudemenor', $latitudemenor);
+        $stmt->bindParam(':latitudemaior', $latitudemaior);
+        $stmt->bindParam(':longitudemenor', $longitudemenor);
+        $stmt->bindParam(':longitudemaior', $longitudemaior);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        echo("<h3>anomalias</h3><table border =\"1\">\n");
+        echo("<tr><td><b>id</b></td><td><b>zona</b></td><td><b>imagem</b></td><td><b>lingua</b></td><td><b>ts</b></td><td><b>descricao</b></td><td><b>tem_anomalia_redacao</b></td></tr>\n");
+        foreach($result as $row){
+            echo("<tr><td>");
+            echo($row['id']);
+            echo("</td><td>");
+            echo($row['zona']);
+            echo("</td><td>");
+            echo($row['imagem']);
+            echo("</td><td>");
+            echo($row['lingua']);
+            echo("</td><td>");
+            echo($row['ts']);
+            echo("</td><td>");
+            echo($row['descricao']);
+            echo("</td><td>");
+            echo($row['tem_anomalia_redacao']);
+            echo("</td></tr>\n");
+        }
+        echo("</table>\n");
+
+        $db->query("commit");
     }
     
     catch (PDOException $e) {
@@ -85,65 +101,37 @@
 ?>
 
         <h3>Definir locais públicos</h3>
-        <form action='a.php' method='post'>
-            <p><input type='hidden' name='mode' value='add'/></p>
-            <p><input type='hidden' name='type' value='local'/></p>
-            <p>latitude: <input type='number' name='latitude' min = '-90' max = '90' step='0.000001'/></p>
-            <p>longitude: <input type='number' name='longitude' min = '-180' max = '180' step='0.000001'/></p>
-            <p>nome: <input type='text' name='nome'/></p>
-            <p><input type='submit' value='Submit'/></p>
-        </form>
-        
-        <h3>Remover local</h3>
-        <form action='a.php' method='post'>
-            <p><input type='hidden' name='mode' value='delete'/></p>
-            <p><input type='hidden' name='type' value='local'/></p>
-            <p>nome: <input type='text' name='nome'/></p>
-            <p><input type='submit' value='Submit'/></p>
-        </form>
+        <form action='e.php' method='post'>
+            <p>Local 1: </p>
+            <?php
 
-        <h3>Inserir item</h3>
-        <form action='a.php' method='post'>
-            <p><input type='hidden' name='mode' value='add'/></p>
-            <p><input type='hidden' name='type' value='item'/></p>
-            <p>descrição: <input type='text' name='descricao'/></p>
-            <p>localização: <input type='text' name='localizacao'/></p>
-            <p>latitude: <input type='number' name='latitude' min = '-90' max = '90' step='0.000001'/></p>
-            <p>longitude: <input type='number' name='longitude' min = '-180' max = '180' step='0.000001'/></p>
-            <p><input type='submit' value='Submit'/></p>
-        </form>
-        
-        <h3>Remover item</h3>
-        <form action='a.php' method='post'>
-            <p><input type='hidden' name='mode' value='delete'/></p>
-            <p><input type='hidden' name='type' value='item'/></p>
-            <p>id: <input type='number' name='id' min = '0'/></p>
-            <p><input type='submit' value='Submit'/></p>
-        </form>
-        
-        <h3>Inserir anomalia</h3>
-        <form action='a.php' method='post'>
-            <p><input type='hidden' name='mode' value='add'/></p>
-            <p><input type='hidden' name='type' value='anomalia'/></p>
-            <p>zona:</p>
-            <p>x1: <input type='number' name='x1'/></p>
-            <p>x2: <input type='number' name='x2'/></p>
-            <p>y1: <input type='number' name='y1'/></p>
-            <p>y2: <input type='number' name='y2'/></p>
-            <p>imagem: <input type='text' name='imagem'/></p>
-            <p>ts: <input type='datetime-local' name='ts' max="2020-09-16T00:30"/></p>
-            <p>lingua: <input type='text' name='lingua'/></p>
-            <p>descrição: <input type='text' name='descricao'/></p>
-            <input type="radio" name="tem_anomalia_redacao" value="true"> tem anomalia de redação<br>
-            <input type="radio" name="tem_anomalia_redacao" value="false" checked> não tem anomalia de redação<br>
-            <p><input type='submit' value='Submit'/></p>
-        </form>
+            echo('<select name = "local1">');
+            $sqlloc = "SELECT * FROM local_publico";
+            $stmtloc = $db->prepare($sqlloc);
+            $stmtloc->execute();
+            $result = $stmtloc->fetchAll();
 
-        <h3>Apagar anomalia</h3>
-        <form action='a.php' method='post'>
-            <p><input type='hidden' name='mode' value='delete'/></p>
-            <p><input type='hidden' name='type' value='anomalia'/></p>
-            <p>id: <input type='number' name='id'/></p>
+            foreach($result as $row){
+                echo("<option value = '$row[nome]'> $row[nome] </option>");
+            }
+            echo('</select>');
+            ?>
+
+            <p>Local 2: </p>
+            <?php
+
+            echo('<select name = "local2">');
+            $sqlloc = "SELECT * FROM local_publico";
+            $stmtloc = $db->prepare($sqlloc);
+            $stmtloc->execute();
+            $result = $stmtloc->fetchAll();
+
+            foreach($result as $row){
+                echo("<option value = '$row[nome]'> $row[nome] </option>");
+            }
+            echo('</select>');
+            ?>
+
             <p><input type='submit' value='Submit'/></p>
         </form>
         
