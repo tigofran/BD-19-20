@@ -44,7 +44,7 @@ create table anomalia_traducao(
     zona2 box not null,
     lingua2 varchar(20) not null,
     constraint pk_anomaliatraducao primary key (id),
-    constraint fk_id_anomaliatraducao foreign key (id) references anomalia(id)
+    constraint fk_id_anomaliatraducao foreign key (id) references anomalia(id) on delete cascade
 );
 
 create table duplicado(
