@@ -42,7 +42,7 @@
             $longitude2 = $row['longitude'];
         }
 
-        if ($latitude1 < $latitude2){
+        if ($latitude1 <= $latitude2){
             $latitudemenor = $latitude1;
             $latitudemaior = $latitude2;
         }
@@ -51,7 +51,7 @@
             $latitudemaior = $latitude1;
         }
 
-        if ($longitude1 < $longitude2){
+        if ($longitude1 <= $longitude2){
             $longitudemenor = $longitude1;
             $longitudemaior = $longitude2;
         }
@@ -72,7 +72,9 @@
 
         echo("<h3>Anomalias</h3><table border =\"0\" cellspacing=\"10\">\n");
         echo("<th><b>Id</b></th><th><b>Zona</b></th><th><b>Imagem</b></th><th><b>Lingua</b></th><th><b>ts</b></th><th><b>Descrição</b></th><th><b>Tem anomalia de redação</b></th></tr>\n");
+        $i = 0;
         foreach($result as $row){
+            $i++;
             echo("<tr><td>");
             echo($row['id']);
             echo("</td><td>");
@@ -90,6 +92,10 @@
             echo("</td></tr>\n");
         }
         echo("</table>\n");
+
+        if($i == 0){
+            echo ("<p>Não existem anomalias nesta área</p>");
+        }
 
         $db->query("commit");
     }
