@@ -33,6 +33,11 @@ insert into item(descricao,localizacao,latitude,longitude) values ('Torre nao te
 insert into item(descricao,localizacao,latitude,longitude) values ('Isidro nao tem traducao','Turismo Rural de Santo Isidro',40.054725, -8.671053);
 insert into item(descricao,localizacao,latitude,longitude) values ('Aeroporto esta mal traduzido','Folheto na entrada',37.017578, -7.969428);
 insert into item(descricao,localizacao,latitude,longitude) values ('Fortaleza esta mal traduzido','Placa turistica na entrada',36.997975, -8.948814);
+insert into item(descricao,localizacao,latitude,longitude) values ('Sinal de entrada mal escrito','Entrada do mosteiro',38.697931, -9.206683);
+insert into item(descricao,localizacao,latitude,longitude) values ('Warning nao tem dois N','Junto aos canhoes',38.691617, -9.215977);
+insert into item(descricao,localizacao,latitude,longitude) values ('Faltam os acentos no nome da pessoa','Placa com o nome de um marinheiro',38.693596, -9.205712);
+
+
 
 insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) values ('((1,5),(5,10))','\xABC12345','Portugues','2019-04-03 10:05:19','Esta tudo mal escrito',TRUE);
 insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) values ('((3,20),(20,24))','\xABC12345','Portugues','2019-06-03 15:05:43','A palavra nao tem acento',TRUE);
@@ -52,6 +57,9 @@ insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) value
 insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) values ('((5,5),(10,10))','\xABC12345','Frances','2019-09-22 07:25:00','Isidro nao tem traducao',FALSE);
 insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) values ('((1,1),(4,4))','\xABC12345','Ingles','2019-04-04 11:30:00','Aeroporto esta mal traduzido',FALSE);
 insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) values ('((1,1),(4,4))','\xABC12345','Italiano','2019-01-21 22:41:00','Fortaleza esta mal traduzido',FALSE);
+insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) values ('((1,1),(2,2))','\xABC12345','Portugues','2019-03-23 22:00:00','Sinal de entrada mal escrito',TRUE);
+insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) values ('((2,2),(4,4))','\xABC12345','Portugues','2019-02-12 21:15:00','Warning nao tem dois N',FALSE);
+insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) values ('((1,3),(4,6))','\xABC12345','Portugues','2019-04-04 09:37:00','Faltam os acentos no nome da pessoa',FALSE);
 
 
 insert into anomalia_traducao(id,zona2,lingua2) values (6,'((6,6),(10,10))','Ingles');
@@ -63,6 +71,8 @@ insert into anomalia_traducao(id,zona2,lingua2) values (13,'((5,5),(10,10))','Po
 insert into anomalia_traducao(id,zona2,lingua2) values (16,'((15,15),(20,20))','Portugues');
 insert into anomalia_traducao(id,zona2,lingua2) values (17,'((5,5),(8,8))','Portugues');
 insert into anomalia_traducao(id,zona2,lingua2) values (18,'((6,6),(9,9))','Portugues');
+insert into anomalia_traducao(id,zona2,lingua2) values (20,'((1,1),(2,2))','Ingles');
+
 
 insert into duplicado values (1,2);
 insert into duplicado values (6,7);
@@ -111,6 +121,10 @@ insert into incidencia(anomalia_id,item_id,email) values (15,15,'matias@gmail.co
 insert into incidencia(anomalia_id,item_id,email) values (16,16,'matias@gmail.com');
 insert into incidencia(anomalia_id,item_id,email) values (17,17,'user3@gmail.com');
 insert into incidencia(anomalia_id,item_id,email) values (18,18,'palush@gmail.com');
+insert into incidencia(anomalia_id,item_id,email) values (19,19,'manel@gmail.com');
+insert into incidencia(anomalia_id,item_id,email) values (20,20,'miguel@gmail.com');
+insert into incidencia(anomalia_id,item_id,email) values (21,21,'user2@webmail.com');
+
 
 insert into proposta_de_correcao(email,nro,data_hora,texto) values ('jose@gmail.com',1,'2019-08-08 10:00:00','Escrever steel em vez de steal');
 insert into proposta_de_correcao(email,nro,data_hora,texto) values ('manel@gmail.com',1,'2019-10-02 07:15:00','Escrever montanha');
@@ -118,6 +132,7 @@ insert into proposta_de_correcao(email,nro,data_hora,texto) values ('alexandra@g
 insert into proposta_de_correcao(email,nro,data_hora,texto) values ('miguel@gmail.com',1,'2019-11-11 19:45:33','Escrever steel em vez de steal');
 insert into proposta_de_correcao(email,nro,data_hora,texto) values ('jose@gmail.com',2,'2019-12-25 01:01:01','Mais correto usar o termo lapiseira');
 insert into proposta_de_correcao(email,nro,data_hora,texto) values ('miguel@gmail.com',2,'2019-11-04 12:00:00','Escrever Portugal');
+insert into proposta_de_correcao(email,nro,data_hora,texto) values ('jose@gmail.com',3,'2019-05-05 10:15:00','Escrever warning so com um N');
 
 insert into correcao(email,nro,anomalia_id) values ('jose@gmail.com',1,6);
 insert into correcao(email,nro,anomalia_id) values ('manel@gmail.com',1,7);
@@ -125,6 +140,8 @@ insert into correcao(email,nro,anomalia_id) values ('alexandra@gmail.com',1,2);
 insert into correcao(email,nro,anomalia_id) values ('miguel@gmail.com',1,6);
 insert into correcao(email,nro,anomalia_id) values ('jose@gmail.com',2,3);
 insert into correcao(email,nro,anomalia_id) values ('miguel@gmail.com',2,5);
+insert into correcao(email,nro,anomalia_id) values ('jose@gmail.com',3,20);
+
 
 
 
