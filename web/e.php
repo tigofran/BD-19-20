@@ -70,8 +70,8 @@
 
         $result = $stmt->fetchAll();
 
-        echo("<h3>anomalias</h3><table border =\"1\">\n");
-        echo("<tr><td><b>id</b></td><td><b>zona</b></td><td><b>imagem</b></td><td><b>lingua</b></td><td><b>ts</b></td><td><b>descricao</b></td><td><b>tem_anomalia_redacao</b></td></tr>\n");
+        echo("<h3>Anomalias</h3><table border =\"0\" cellspacing=\"10\">\n");
+        echo("<th><b>Id</b></th><th><b>Zona</b></th><th><b>Imagem</b></th><th><b>Lingua</b></th><th><b>ts</b></th><th><b>Descrição</b></th><th><b>Tem anomalia de redação</b></th></tr>\n");
         foreach($result as $row){
             echo("<tr><td>");
             echo($row['id']);

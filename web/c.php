@@ -22,8 +22,8 @@
         $stmt->execute();
         $result = $stmt->fetchAll();
 
-        echo("<h3>utilizadores</h3><table border =\"1\">\n");
-        echo("<tr><td><b>email</b></td><td><b>pass</b></td></tr>\n");
+        echo("<h3>Utilizadores</h3><table border =\"0\" cellspacing=\"10\">\n");
+        echo("<tr><th><b>Email</b></th><th><b>Pass</b></th></tr>\n");
         foreach($result as $row){
             echo("<tr><td>");
             echo($row['email']);
