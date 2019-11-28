@@ -28,8 +28,8 @@
             $stmt->execute();
         }
 
-        if ($type == "duplicados") {
-            $sql = "INSERT INTO duplicados (item1, item2) VALUES(:item1, :item2);";
+        if ($type == "duplicado") {
+            $sql = "INSERT INTO duplicado (item1, item2) VALUES(:item1, :item2);";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(':item1', $_REQUEST['item1']);
             $stmt->bindParam(':item2', $_REQUEST['item2']);
@@ -48,7 +48,21 @@
         <h3>Registar incidência</h3>
         <form action='d.php' method='post'>
             <p><input type='hidden' name='type' value='incidencia'/></p>
-            <p>ID da anomalia: <input type='number' name='anomalia_id' min = '0'/></p>
+            <p>ID da anomalia: </p>
+            <?php
+
+            echo('<select name = "anomalia_id">');
+            $sqlid = "SELECT id FROM anomalia";
+            $stmtid = $db->prepare($sqlid);
+            $stmtid->execute();
+            $result = $stmtid->fetchAll();
+
+            foreach($result as $row){
+                echo("<option value = '$row[id]'> $row[id] </option>");
+            }
+            echo('</select>');
+            ?>
+
             <p>ID do item: <input type='number' name='item_id' min = '0'/></p>
             <p>email: <input type='text' name='email'/></p>
             <p><input type='submit' value='Submit'/></p>
@@ -61,7 +75,7 @@
             <p>ID do item 2: <input type='number' id = 'item2' name='item2' min = '0'/></p>
             <p><input type='submit' value='Submit'/></p>
         </form>
-        <!-- <script>
+        <script>
             function setMin() {
                 var item1 = document.getElementById("item1");
                 var item2 = document.getElementById("item2");
@@ -69,6 +83,6 @@
             }
             var trigger = document.getElementById("item1");
             trigger.addEventListener("change", setMin, false);
-        </script> -->  
+        </script>  
     </body>
 </html>

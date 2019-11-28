@@ -50,16 +50,12 @@
                 $stmt->execute();
             }
             if ($type == "item") {
-                $sql = "INSERT INTO local_publico (latitude, longitude) VALUES(:latitude, :longitude);";
-                $stmt = $db->prepare($sql);
-                $stmt->bindParam(':latitude', $_REQUEST['latitude']);
-                $stmt->bindParam(':longitude', $_REQUEST['longitude']);
-                $stmt->execute();
-
-                $sql = "INSERT INTO item (descricao, localizacao) VALUES(:descricao, :localizacao);";
+                $sql = "INSERT INTO item (descricao, localizacao, latitude, longitude) VALUES(:descricao, :localizacao, :latitude, :longitude);";
                 $stmt = $db->prepare($sql);
                 $stml->bindParam(':descricao', $_REQUEST['descricao']);
                 $stml->bindParam(':localizacao', $_REQUEST['localizacao']);
+                $stmt->bindParam(':latitude', $_REQUEST['latitude']);
+                $stmt->bindParam(':longitude', $_REQUEST['longitude']);
                 $stml->execute();
             }
             if ($type == "anomalia") {
@@ -69,9 +65,7 @@
                 $stml->bindParam(':zona', $var);
                 $stml->bindParam(':imagem', $_REQUEST['imagem']);
                 $stml->bindParam(':lingua', $_REQUEST['lingua']);
-                $var2 = str_replace('T', ' ', $_REQUEST['ts']);
-                $var2 = $var2 . ':00';
-                $stml->bindParam(':ts', $var2);
+                $stml->bindParam(':ts', $_REQUEST['ts']);
                 $stml->bindParam(':descricao', $_REQUEST['descricao']);
                 $stml->bindParam(':tem_anomalia_redacao', $_REQUEST['tem_anomalia_redacao']);
                 $stml->execute();
