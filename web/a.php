@@ -50,12 +50,6 @@
                 $stmt->execute();
             }
             if ($type == "item") {
-                $sql = "INSERT INTO local_publico (latitude, longitude, nome) VALUES(:latitude, :longitude);";
-                $stmt = $db->prepare($sql);
-                $stmt->bindParam(':latitude', $_REQUEST['latitude']);
-                $stmt->bindParam(':longitude', $_REQUEST['longitude']);
-                $stmt->execute();
-
                 $sql = "INSERT INTO item (descricao, localizacao, latitude, longitude) VALUES(:descricao, :localizacao, :latitude, :longitude);";
                 $stmt = $db->prepare($sql);
                 $stml->bindParam(':descricao', $_REQUEST['descricao']);
