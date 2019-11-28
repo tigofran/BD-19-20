@@ -82,16 +82,61 @@
             <p><input type='hidden' name='mode' value='edit'/></p>
             <p><input type='hidden' name='type' value='proposta_de_correcao'/></p>
             <p>novo texto: <input type='text' name='texto'/></p>
-            <p>email: <input type='text' name='email'/></p>
-            <p>numero: <input type='number' name='nro' min = '0'/></p>
+            <p>email: </p>
+
+            <?php
+            echo('<select name = "email">');
+            $sql = "SELECT email FROM utilizador;";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+
+            foreach($result as $row){
+                echo("<option value = '$row[email]'> $row[email] </option>");
+            }
+            echo('</select>');
+            ?>
+            <?php
+            $sql = "SELECT nro FROM proposta_de_correcao WHERE nro >= all(SELECT nro FROM proposta_de_correcao);";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+
+            foreach($result as $row){
+                $max = $row['nro'];
+            }
+            ?>
+            <p>numero: <input type='number' name='nro' min = '1' max="<?php echo $max ?>"/></p>
             <p><input type='submit' value='Submit'/></p>
         </form>
 
         <h3>Remover correção e proposta de correção </h3>
         <form action='b.php' method='post'>
             <p><input type='hidden' name='mode' value='delete'/></p>
-            <p>email: <input type='text' name='email'/></p>
-            <p>numero: <input type='number' name='nro' min = '0'/></p>
+            <p>email: </p>
+            <?php
+            echo('<select name = "email">');
+            $sql = "SELECT email FROM utilizador;";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+
+            foreach($result as $row){
+                echo("<option value = '$row[email]'> $row[email] </option>");
+            }
+            echo('</select>');
+            ?>
+            <?php
+            $sql = "SELECT nro FROM proposta_de_correcao WHERE nro >= all(SELECT nro FROM proposta_de_correcao);";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+
+            foreach($result as $row){
+                $max = $row['nro'];
+            }
+            ?>
+            <p>numero: <input type='number' name='nro' min = '1' max="<?php echo $max ?>"/></p>
             <p><input type='submit' value='Submit'/></p>
         </form>
     </body>
