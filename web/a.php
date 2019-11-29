@@ -94,7 +94,18 @@
         <form action='a.php' method='post'>
             <p><input type='hidden' name='mode' value='delete'/></p>
             <p><input type='hidden' name='type' value='local'/></p>
-            <p>nome: <input type='text' name='nome'/></p>
+            <?php
+            echo('<select name = "nome">');
+            $sql = "SELECT nome FROM local_publico;";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+
+            foreach($result as $row){
+                echo("<option value = '$row[nome]'> $row[nome] </option>");
+            }
+            echo('</select>');
+            ?>
             <p><input type='submit' value='Submit'/></p>
         </form>
 
@@ -112,8 +123,19 @@
         <h3>Remover item</h3>
         <form action='a.php' method='post'>
             <p><input type='hidden' name='mode' value='delete'/></p>
+            <?php
+            $sql = "SELECT id FROM item WHERE id >= all(SELECT id FROM item);";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+
+            foreach($result as $row){
+                $max = $row['id'];
+            }
+            ?>
+
             <p><input type='hidden' name='type' value='item'/></p>
-            <p>id: <input type='number' name='id' min = '0'/></p>
+            <p>id: <input type='number' name='id' min = '1' max="<?php echo $max ?>"/></p>
             <p><input type='submit' value='Submit'/></p>
         </form>
         
@@ -138,8 +160,19 @@
         <h3>Apagar anomalia</h3>
         <form action='a.php' method='post'>
             <p><input type='hidden' name='mode' value='delete'/></p>
+            <?php
+            $sql = "SELECT id FROM anomalia WHERE id >= all(SELECT id FROM anomalia);";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+
+            foreach($result as $row){
+                $max = $row['id'];
+            }
+            ?>
+
             <p><input type='hidden' name='type' value='anomalia'/></p>
-            <p>id: <input type='number' name='id'/></p>
+            <p>id: <input type='number' name='id' min = '1' max="<?php echo $max ?>"/></p>
             <p><input type='submit' value='Submit'/></p>
         </form>
         
