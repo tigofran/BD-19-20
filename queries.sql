@@ -29,13 +29,13 @@ HAVING COUNT(email) >= ALL(
 	GROUP BY email);
 
 
-SELECT email, COUNT(email)
+/*SELECT email, COUNT(email)
 FROM utilizador_regular NATURAL JOIN incidencia
 WHERE anomalia_id IN (
 	SELECT id
 	FROM anomalia_traducao NATURAL JOIN anomalia
 	WHERE ts >= '2019-01-01 00:00:00' AND ts < '2019-07-01 00:00:00')
-GROUP BY email;
+GROUP BY email;*/
 
 
 
@@ -62,25 +62,21 @@ HAVING COUNT(DISTINCT foo.latitude) = (SELECT COUNT(latitude) FROM local_publico
 
 /*QUERY 4*/
 
-SELECT  anomalia_id, email
-FROM incidencia INNER JOIN item
-ON incidencia.item_id = item.id
-INNER JOIN anomalia
-ON incidencia.anomalia_id = anomalia.id
-WHERE ts >= '2019-01-01 00:00:00' AND ts < '2020-01-01 00:00:00' 
-	AND latitude < 39.336775;
-
-
-SELECT email
-FROM utilizador_qualificado 
-EXCEPT 
-SELECT email
-FROM correcao NATURAL JOIN
-	(SELECT  email,anomalia_id
+SELECT DISTINCT email
+FROM utilizador_qualificado NATURAL JOIN (SELECT  anomalia_id, email
 	FROM incidencia INNER JOIN item
 	ON incidencia.item_id = item.id
 	INNER JOIN anomalia
 	ON incidencia.anomalia_id = anomalia.id
 	WHERE ts >= '2019-01-01 00:00:00' AND ts < '2020-01-01 00:00:00' 
-		AND latitude < 39.336775) AS foo;
+		AND latitude < 39.336775
+	) AS foo
+WHERE anomalia_id||email NOT IN (SELECT anomalia_id||email FROM correcao);
 
+/*SELECT  anomalia_id, email
+FROM incidencia INNER JOIN item
+ON incidencia.item_id = item.id
+INNER JOIN anomalia
+ON incidencia.anomalia_id = anomalia.id
+WHERE ts >= '2019-01-01 00:00:00' AND ts < '2020-01-01 00:00:00' 
+	AND latitude < 39.336775;*/
