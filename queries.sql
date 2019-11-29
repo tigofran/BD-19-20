@@ -1,7 +1,8 @@
 /*QUERY 1*/
 
-SELECT localizacao
-FROM item
+SELECT nome
+FROM local_publico INNER JOIN item
+ON local_publico.latitude = item.latitude AND local_publico.longitude = item.longitude
 WHERE id = (SELECT item_id
 FROM incidencia 
 GROUP BY item_id
