@@ -1,16 +1,17 @@
 /*QUERY 1*/
 
 SELECT nome
-FROM local_publico INNER JOIN item
-ON local_publico.latitude = item.latitude AND local_publico.longitude = item.longitude
-WHERE id = (SELECT item_id
-FROM incidencia 
-GROUP BY item_id
-HAVING COUNT(anomalia_id) = (SELECT MAX(mycount)
-FROM (
-	SELECT item_id ,COUNT(item_id) AS mycount
-FROM incidencia
-GROUP BY item_id) AS foo));
+FROM local_publico INNER JOIN (SELECT CONCAT(latitude,longitude) AS coord, COUNT(CONCAT(latitude,longitude)) AS mycount
+		FROM item INNER JOIN incidencia
+		ON incidencia.item_id = item.id
+		GROUP BY CONCAT(latitude,longitude)) AS foo 
+ON CONCAT(local_publico.latitude,local_publico.longitude) = foo.coord
+WHERE mycount = (SELECT MAX(mycount)
+	FROM (SELECT CONCAT(latitude,longitude), COUNT(CONCAT(latitude,longitude)) AS mycount
+		FROM item INNER JOIN incidencia
+		ON incidencia.item_id = item.id
+		GROUP BY CONCAT(latitude,longitude)) AS a);
+
 
 
 /*QUERY 2*/
