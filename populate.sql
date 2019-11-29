@@ -15,8 +15,8 @@ insert into local_publico(latitude,longitude,nome) values (37.017578, -7.969428,
 insert into local_publico(latitude,longitude,nome) values (37.073545, -8.115933, 'Casino Vilamoura');
 insert into local_publico(latitude,longitude,nome) values (36.997975, -8.948814, 'Fortaleza de Sagres');
 
-insert into item(descricao,localizacao,latitude,longitude) values ('Nao se diz porta minas', 'Escola Santo Isidro',40.054725, -8.671053);
-insert into item(descricao,localizacao,latitude,longitude) values ('Nao se diz porta minas', 'Escola Santo Isidro',40.054725, -8.671053);
+insert into item(descricao,localizacao,latitude,longitude) values ('Nao se diz porta minas', 'Escola junto da praça',38.725280, -9.150049);
+insert into item(descricao,localizacao,latitude,longitude) values ('Nao se diz porta minas', 'Escola junto da praça',38.725280, -9.150049);
 insert into item(descricao,localizacao,latitude,longitude) values ('A palavra nao tem acento', 'Colunas do Templo', 38.572632, -7.907273);
 insert into item(descricao,localizacao,latitude,longitude) values ('Esta tudo mal escrito', 'Placa turistica', 38.937000, -9.325951);
 insert into item(descricao,localizacao,latitude,longitude) values ('Portugal nao tem dois O', 'Panfleto na torre', 41.448172, -8.290265);
