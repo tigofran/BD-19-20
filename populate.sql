@@ -56,7 +56,7 @@ insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) value
 insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) values ('((1,1),(4,4))','\xABC12345','Ingles','2019-04-04 11:30:00','Aeroporto esta mal traduzido',FALSE);
 insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) values ('((1,1),(4,4))','\xABC12345','Italiano','2019-01-21 22:41:00','Fortaleza esta mal traduzido',FALSE);
 insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) values ('((1,1),(2,2))','\xABC12345','Portugues','2019-03-23 22:00:00','Sinal de entrada mal escrito',TRUE);
-insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) values ('((2,2),(4,4))','\xABC12345','Portugues','2019-02-12 21:15:00','Warning nao tem dois N',FALSE);
+insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) values ('((3,3),(4,4))','\xABC12345','Portugues','2019-02-12 21:15:00','Warning nao tem dois N',FALSE);
 insert into anomalia(zona,imagem,lingua,ts,descricao,tem_anomalia_redacao) values ('((1,3),(4,6))','\xABC12345','Portugues','2019-04-04 09:37:00','Faltam os acentos no nome da pessoa',TRUE);
 
 insert into anomalia_traducao(id,zona2,lingua2) values (6,'((6,6),(10,10))','Ingles');
