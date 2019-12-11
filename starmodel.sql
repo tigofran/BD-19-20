@@ -41,7 +41,7 @@ create table f_anomalia(
     id_tempo integer not null,
     id_local integer not null,
     id_lingua integer not null,
-    tipo_anomalia smallint not null,
+    tipo_anomalia varchar(10) not null,
     com_proposta boolean not null,
     primary key(id_utilizador,id_tempo,id_local,id_lingua),
     foreign key(id_utilizador) references d_utilizador(id_utilizador) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -51,7 +51,7 @@ create table f_anomalia(
 );
 
 insert into d_tempo(dia,dia_da_semana,semana,mes,trimestre,ano)
-    select extract(day from ts) as dia,
+    select distinct extract(day from ts) as dia,
     to_char(ts,'Day') as dia_da_semana,
     extract(week from ts) as semana,
     extract(month from ts) as mes,
@@ -66,7 +66,19 @@ insert into d_utilizador(email,tipo)
     select email, 'qualificado' from utilizador natural join utilizador_qualificado;
 
 insert into d_lingua(lingua)
-    select lingua from anomalia;
+    select distinct lingua from anomalia;
 
 insert into d_local(latitude, longitude, nome)
-    select latitude, longitude, nome as localizacao from item natural join local_publico;
+    select distinct latitude, longitude, nome as localizacao from item natural join local_publico;
+
+insert into f_anomalia(id_utilizador,id_tempo,id_local,id_lingua,tipo_anomalia,com_proposta) values (9,10,3,2,'redacao',false);
+insert into f_anomalia(id_utilizador,id_tempo,id_local,id_lingua,tipo_anomalia,com_proposta) values (10,13,6,2,'redacao',true);
+insert into f_anomalia(id_utilizador,id_tempo,id_local,id_lingua,tipo_anomalia,com_proposta) values (11,3,1,2,'redacao',true);
+insert into f_anomalia(id_utilizador,id_tempo,id_local,id_lingua,tipo_anomalia,com_proposta) values (4,16,1,2,'redacao',false);
+insert into f_anomalia(id_utilizador,id_tempo,id_local,id_lingua,tipo_anomalia,com_proposta) values (5,1,14,4,'redacao',false);
+insert into f_anomalia(id_utilizador,id_tempo,id_local,id_lingua,tipo_anomalia,com_proposta) values (7,5,7,2,'traducao',true);
+insert into f_anomalia(id_utilizador,id_tempo,id_local,id_lingua,tipo_anomalia,com_proposta) values (10,14,7,2,'traducao',true);
+insert into f_anomalia(id_utilizador,id_tempo,id_local,id_lingua,tipo_anomalia,com_proposta) values (1,12,13,6,'traducao',false);
+insert into f_anomalia(id_utilizador,id_tempo,id_local,id_lingua,tipo_anomalia,com_proposta) values (3,15,13,6,'traducao',false);
+insert into f_anomalia(id_utilizador,id_tempo,id_local,id_lingua,tipo_anomalia,com_proposta) values (2,15,8,2,'redacao',false);
+
